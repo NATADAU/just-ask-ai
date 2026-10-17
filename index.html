@@ -49,11 +49,34 @@ body{font-size:18px}
 @media(max-width:850px){.orb{width:clamp(420px,72vw,680px);height:clamp(420px,72vw,680px);right:-30%;top:11%;opacity:.70}.navlinks a{font-size:15px}}
 @media(max-width:590px){.hero{min-height:95svh}.orb{width:400px;height:400px;right:-190px;top:12%;opacity:.47}.orb:after{font-size:190px}.hero h1{font-size:clamp(61px,12.5vw,90px)}.heading{font-size:clamp(46px,9vw,70px)}.lead{font-size:21px}.sub{font-size:22px}.key{font-size:clamp(22px,6vw,35px);min-width:0;padding:22px 13px;border-radius:17px}.keyboard{gap:7px}.plus{font-size:21px}.role h3{font-size:32px}.feature p,.role p,.roles-note{font-size:19px}.btn,.copy{font-size:16px;padding:15px 19px}}
 @media(prefers-reduced-motion:reduce){.key:hover{transform:none}}
+
+/* Chromatic motion inspired by soft-focus luminous poster art */
+.hero{background:#EAE0D6;isolation:isolate;min-height:100svh}
+.hero:before{display:none}
+.neon-field{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 72% 52%,#F4E7DC00 18%,#EAE0D680 76%)}
+.neon-streak{position:absolute;display:block;left:34%;width:78%;height:16%;border-radius:52% 48% 48% 52% / 55% 60% 45% 50%;filter:blur(clamp(17px,2.9vw,48px));opacity:.88;mix-blend-mode:multiply;transform:rotate(-7deg) skewX(-14deg);will-change:transform;animation:neon-drift 11s ease-in-out infinite alternate}
+.streak-lime{top:11%;left:39%;width:74%;height:15%;background:linear-gradient(90deg,#c8fc05aa 0%,#eeff00 30%,#d4ff00 70%,#cfff1388 100%);animation-delay:-2s}
+.streak-blue{top:29%;left:32%;width:86%;height:17%;background:linear-gradient(90deg,#153cc688,#0058f5 35%,#092c9f 67%,#1c80f055);transform:rotate(5deg) skewX(-12deg);animation-delay:-7s}
+.streak-pink{top:47%;left:49%;width:67%;height:17%;background:linear-gradient(90deg,#ff699977,#ff2e91 45%,#fc0a68 80%,#fb91b766);animation-delay:-4s}
+.streak-orange{top:63%;left:27%;width:79%;height:15%;background:linear-gradient(90deg,#ff983577,#fe5a00 42%,#ff3800 85%,#fd6e2477);animation-delay:-9s}
+.streak-green{top:77%;left:51%;width:61%;height:15%;background:linear-gradient(90deg,#48ff7266,#10db32 35%,#00bd66 78%,#8ce87866);animation-delay:-5s}
+.neon-haze{position:absolute;inset:0;background:linear-gradient(90deg,#EAE0D6 0%,#EAE0D6f5 23%,#EAE0D688 48%,transparent 70%);pointer-events:none}
+@keyframes neon-drift{0%{translate:-1.5% -7%;scale:1 1}50%{translate:2% 2%;scale:1.04 .98}100%{translate:-2% 9%;scale:.98 1.06}}
+.hero .wrap{z-index:2;position:relative}
+.hero h1{color:#263b32;text-shadow:0 1px 16px #EAE0D6aa}
+.hero h1 em{color:#a84332}
+.hero .lead{color:#433e39;background:#EAE0D68f;border-radius:18px;backdrop-filter:blur(4px);padding:7px 12px 7px 0}
+.ticker{position:relative;isolation:isolate;background:#E8C7C7}
+.ticker:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(105deg,#fcff0090,#ff50994d 34%,#3766f36d 70%,#29e05b70);filter:blur(13px);opacity:.9}
+.ticker-alt:before{background:linear-gradient(100deg,#31e75a66,#fff30088 34%,#ff524b5c 74%,#3565ed66)}
+@media(max-width:850px){.neon-streak{left:26%;width:104%}.streak-lime{left:32%;width:91%}.streak-blue{left:24%;width:110%}.streak-pink{left:41%;width:96%}.streak-orange{left:25%;width:100%}.streak-green{left:39%;width:88%}.neon-haze{background:linear-gradient(90deg,#EAE0D6 0%,#EAE0D6e3 31%,#EAE0D65e 68%,transparent)}}
+@media(max-width:590px){.neon-streak{left:14%;width:125%;height:13%;filter:blur(25px);opacity:.70}.streak-lime{top:10%}.streak-blue{top:27%}.streak-pink{top:46%}.streak-orange{top:65%}.streak-green{top:81%}.neon-haze{background:linear-gradient(90deg,#EAE0D6e8 0%,#EAE0D6aa 48%,#EAE0D640 100%)}.hero .lead{background:#EAE0D6bb}}
+@media(prefers-reduced-motion:reduce){.neon-streak{animation:none;will-change:auto}}
 </style></head><body>
 <div class="progress" id="progress"></div>
 <nav class="nav" aria-label="Навигация"><a class="brand" href="#top"><span>?</span> можно просто спросить</a><button class="menu" id="menu" aria-label="Открыть меню" aria-expanded="false">☰</button><div class="navlinks" id="navlinks"><a href="#start">Начало</a><a href="#tools">Инструменты</a><a href="#examples">Примеры</a><a href="#keys">Три клавиши</a><a href="#cursor">Cursor</a><a href="#site">Ваш сайт</a><a href="#final">Сюрприз ✦</a></div></nav>
 <main>
-<section class="hero section" id="top"><div class="orb"></div><div class="wrap"><div class="kicker">ИИ в повседневной работе</div><h1>Можно<br>просто <em>спросить.</em></h1><p class="lead">Личный опыт: от первой автоматической рассылки до работы с документами, таблицами, презентациями и сайтами.</p><div class="actions"><a class="btn" href="#start">Начать ↘</a><a class="btn ghost" href="#final">Подарок в конце ✦</a></div></div></section>
+<section class="hero section" id="top"><div class="neon-field" aria-hidden="true"><span class="neon-streak streak-lime"></span><span class="neon-streak streak-blue"></span><span class="neon-streak streak-pink"></span><span class="neon-streak streak-orange"></span><span class="neon-streak streak-green"></span><span class="neon-haze"></span></div><div class="wrap"><div class="kicker">ИИ в повседневной работе</div><h1>Можно<br>просто <em>спросить.</em></h1><p class="lead">Личный опыт: от первой автоматической рассылки до работы с документами, таблицами, презентациями и сайтами.</p><div class="actions"><a class="btn" href="#start">Начать ↘</a><a class="btn ghost" href="#final">Подарок в конце ✦</a></div></div></section>
 <div class="ticker"><div class="ticker-track">ПИСЬМА ✳ EXCEL ✳ ПРЕЗЕНТАЦИИ ✳ СКРИПТЫ ✳ САЙТЫ ✳ CHATGPT ✳ CURSOR ✳ CLAUDE ✳ ПИСЬМА ✳ EXCEL ✳ ПРЕЗЕНТАЦИИ ✳ СКРИПТЫ ✳ САЙТЫ ✳ CHATGPT ✳ CURSOR ✳ CLAUDE ✳ </div></div>
 <section class="section" id="start"><div class="wrap"><div class="eyebrow">01 / Начало</div><h2 class="heading">Я не умею программировать.<br><em>Но у меня была задача.</em></h2><p class="sub">Нужно было отправлять квитанции адресно: каждому получателю — свой PDF. С помощью ИИ появился скрипт, который делает эту работу. Код писал ИИ, а я объясняла задачу, проверяла и тестировала результат.</p><div class="feature"><strong>Было:</strong> повторяющаяся ручная работа. <strong>Стало:</strong> автоматизация, которую можно запускать по необходимости.</div></div></section>
 <section class="section dark" id="tools"><div class="wrap"><div class="eyebrow">02 / Инструменты</div><h2 class="heading">Разные помощники.<br><em>Разные задачи.</em></h2><div class="tool-lines"><p><b>ChatGPT</b> — тексты, анализ, документы, таблицы, идеи и объяснения.</p><p><b>Cursor</b> — работа с файлами на компьютере и создание скриптов с помощью ИИ.</p><p><b>Claude</b> — ещё один собеседник для текстов, анализа и сложных задач.</p><p><b>GitHub</b> — место, где хранится код этого сайта и его изменения.</p><p><b>Figma</b> — работа с макетами и визуальными материалами.</p></div></div></section>
