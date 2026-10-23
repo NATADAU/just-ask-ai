@@ -967,7 +967,7 @@ html:not(.fx-spot) .card::before{display:none}
   /* 6. расшифровка заголовков */
   if(state.scramble && !reduce){
     var ABC = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯабвгдежзиклмнопрстуфхцчшщэюя0123456789#%&';
-    var ems = [].slice.call(document.querySelectorAll('.h2 em'));
+    var ems = [].slice.call(document.querySelectorAll('#cases .h2 em, #now .h2 em, #site .h2 em'));
     ems.forEach(function(em){ em.dataset.txt = em.textContent; });
     onView(ems, function(em){
       var fin = em.dataset.txt, start = performance.now(), dur = 2600, last = 0, out = '';
