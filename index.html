@@ -851,5 +851,123 @@ Get-ChildItem -LiteralPath "E:\Синдром любви" | ForEach-Object { $_.
   
 })();
 </script>
+<!-- Эффекты: печать ответа, слова, раздача карт, подсветка, бегущая строка, расшифровка -->
+<style>
+
+/* 1. Печатающийся ответ */
+.fx-type .msg.ai.typing::after{content:"▍";margin-left:2px;color:#019BAB;animation:fxBlink .8s steps(1) infinite}
+@keyframes fxBlink{50%{opacity:0}}
+
+/* 2. Слова загораются */
+.fx-words .fxw{color:inherit;opacity:.18;transition:opacity .35s ease,color .35s ease}
+.fx-words .fxw.on{opacity:1}
+.fx-words .quote .fxw.on,.fx-words .site-quote .fxw.on{color:#E5004F}
+.fx-words .site-quote .fxw.on{color:#E5004F}
+
+/* 3. Раздача карт */
+.fx-stack.js #lessons .duo .card.reveal{opacity:0;filter:none;transform:translate(var(--dx,0),var(--dy,140px)) rotate(var(--rot,-8deg)) scale(.85);transition:opacity .45s ease,transform .8s cubic-bezier(.16,1.12,.3,1);box-shadow:0 30px 60px rgba(42,42,42,.18)}
+.fx-stack.js #lessons .duo .card.reveal.show{opacity:1;transform:none;box-shadow:0 14px 48px rgba(42,42,42,.065)}
+.fx-stack #lessons .duo .card:nth-child(1){--dx:25%;--dy:160px;--rot:-9deg;transition-delay:0s!important}
+.fx-stack #lessons .duo .card:nth-child(2){--dx:-25%;--dy:170px;--rot:7deg;transition-delay:.35s!important}
+.fx-stack #lessons .duo .card:nth-child(3){--dx:25%;--dy:60px;--rot:-4deg;transition-delay:.7s!important}
+.fx-stack #lessons .duo .card:nth-child(4){--dx:-25%;--dy:70px;--rot:10deg;transition-delay:1.05s!important}
+
+.fx-stack #lessons{overflow-x:clip}
+@media (max-width:860px){.fx-stack #lessons .duo .card{--dx:0!important}}
+/* 4. Подсветка за курсором */
+html:not(.fx-spot) .card::before{display:none}
+.fx-spot .card::before{background:radial-gradient(340px circle at var(--mx,50%) var(--my,0%),rgba(1,155,171,.20),rgba(229,0,79,.06) 45%,transparent 70%)!important}
+.fx-spot .card{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.fx-spot .card:hover{border-color:rgba(1,155,171,.45);box-shadow:0 22px 60px rgba(1,155,171,.16)}
+
+/* 5. Бегущая строка */
+.fxm{display:none}
+.fx-marquee .fxm{display:block;overflow:hidden;padding:28px 0;max-width:100%}
+.fxm-band{width:104%;margin-left:-2%;padding:18px 0;background:#019BAB;color:#FFFFFF;transform:rotate(-1.5deg);box-shadow:0 14px 40px rgba(1,155,171,.25)}
+.fxm-track{display:flex;width:max-content;gap:40px;animation:fxMarq 26s linear infinite;font-weight:600;font-size:clamp(28px,4vw,54px);letter-spacing:-.02em;white-space:nowrap}
+.fxm-track span::after{content:"✦";margin-left:40px;color:#FFDD02}
+@keyframes fxMarq{to{transform:translateX(-50%)}}
+
+/* 6. Расшифровка заголовков */
+.fx-scramble .h2 em.scr{font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion:reduce){.fxm-track{animation:none}}
+</style>
+
+<div class="fxm" aria-hidden="true"><div class="fxm-band"><div class="fxm-track"><span>Можно просто спросить</span><span>Можно просто спросить</span><span>Можно просто спросить</span><span>Можно просто спросить</span><span>Можно просто спросить</span><span>Можно просто спросить</span></div></div></div>
+
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var state = {type:true, words:true, stack:true, spot:true, marquee:true, scramble:true};
+  Object.keys(state).forEach(function(k){ root.classList.add('fx-' + k); });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var onView = function(els, fn, thr){
+    if(!('IntersectionObserver' in window)){ els.forEach(fn); return; }
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); fn(e.target); } }); }, {threshold: thr || .6});
+    els.forEach(function(el){ io.observe(el); });
+  };
+
+  /* бегущая строка: после первого экрана */
+  var band = document.querySelector('.fxm');
+  var plan = document.getElementById('plan');
+  if(band && plan) plan.parentNode.insertBefore(band, plan);
+
+  /* 1. печатающийся ответ */
+  if(state.type && !reduce){
+    var delays = [0.6, 1.6, 2.7, 3.6];
+    document.querySelectorAll('.chat-body .msg').forEach(function(m, i){
+      if(!m.classList.contains('ai')) return;
+      var words = m.textContent.split(' ');
+      m.textContent = ''; m.classList.add('typing');
+      setTimeout(function(){
+        var n = 0;
+        var t = setInterval(function(){
+          n++; m.textContent = words.slice(0, n).join(' ');
+          if(n >= words.length){ clearInterval(t); setTimeout(function(){ m.classList.remove('typing'); }, 600); }
+        }, 180);
+      }, (delays[i] || 0) * 1000 + 250);
+    });
+  }
+
+  /* 2. слова загораются по очереди */
+  if(state.words){
+    var qs = [].slice.call(document.querySelectorAll('.quote, .site-quote'));
+    qs.forEach(function(q){
+      var parts = q.textContent.split(' ');
+      q.innerHTML = parts.map(function(w){ return '<span class="fxw">' + w.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</span>'; }).join(' ');
+    });
+    onView(qs, function(q){
+      q.querySelectorAll('.fxw').forEach(function(w, i){ setTimeout(function(){ w.classList.add('on'); }, reduce ? 0 : 400 + i * 160); });
+    }, .8);
+  }
+
+  /* 6. расшифровка заголовков */
+  if(state.scramble && !reduce){
+    var ABC = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯабвгдежзиклмнопрстуфхцчшщэюя0123456789#%&';
+    var ems = [].slice.call(document.querySelectorAll('.h2 em'));
+    ems.forEach(function(em){ em.dataset.txt = em.textContent; });
+    onView(ems, function(em){
+      var fin = em.dataset.txt, start = performance.now(), dur = 2600, last = 0, out = '';
+      em.classList.add('scr');
+      (function step(now){
+        var p = Math.min(1, (now - start) / dur);
+        if(now - last < 90 && p < 1){ requestAnimationFrame(step); return; }
+        last = now; out = '';
+        for(var i = 0; i < fin.length; i++){
+          var c = fin[i];
+          if(c === ' ' || c === ' ' || c === '.' || c === ',' || i < Math.floor(p * fin.length)) out += c;
+          else out += ABC[Math.floor(Math.random() * ABC.length)];
+        }
+        em.textContent = out;
+        if(p < 1) requestAnimationFrame(step); else { em.textContent = fin; em.classList.remove('scr'); }
+      })(start);
+    }, .8);
+  }
+})();
+</script>
+<!-- /Эффекты -->
 </body>
 </html>
