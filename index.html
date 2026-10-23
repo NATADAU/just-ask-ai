@@ -900,7 +900,9 @@ html:not(.fx-spot) .card::before{display:none}
 
 /* 5. Бегущая строка */
 .fxm{display:none}
-.fx-marquee .fxm{display:block;overflow:hidden;padding:28px 0;max-width:100%}
+.fx-marquee #site.section.screen{flex-direction:column;justify-content:center;align-items:stretch}
+.fx-marquee #site .wrap{width:100%}
+.fx-marquee .fxm{display:block;overflow:hidden;padding:18px 0 6px;max-width:100%;margin-top:28px}
 .fxm-band{width:104%;margin-left:-2%;padding:18px 0;background:#019BAB;color:#FFFFFF;transform:rotate(-1.5deg);box-shadow:0 14px 40px rgba(1,155,171,.25)}
 .fxm-track{display:flex;width:max-content;gap:40px;animation:fxMarq 26s linear infinite;font-weight:600;font-size:clamp(28px,4vw,54px);letter-spacing:-.02em;white-space:nowrap}
 .fxm-track span::after{content:"✦";margin-left:40px;color:#FFDD02}
@@ -930,8 +932,8 @@ html:not(.fx-spot) .card::before{display:none}
 
   /* бегущая строка: после первого экрана */
   var band = document.querySelector('.fxm');
-  var plan = document.getElementById('plan');
-  if(band && plan) plan.parentNode.insertBefore(band, plan);
+  var site = document.getElementById('site');
+  if(band && site) site.appendChild(band);
 
   /* 1. печатающийся ответ */
   if(state.type && !reduce){
