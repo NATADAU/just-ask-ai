@@ -269,8 +269,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .card.cycle p{color:#e6dcd3;font-size:clamp(18px,1.6vw,21px)}
 .step span b{color:var(--text)}
 /* ---------- режим выступления: экраны ---------- */
-html{scroll-snap-type:y proximity}
-.hero.screen,.section.screen{scroll-snap-align:start}
+/* магнит к экранам — только на компьютере (мышь); на телефоне свободная прокрутка по инерции */
+@media (hover:hover) and (pointer:fine){
+  html{scroll-snap-type:y proximity}
+  .hero.screen,.section.screen{scroll-snap-align:start}
+}
 .section.screen{min-height:100vh;display:flex;align-items:center;padding:112px 0 72px}
 .section.screen>.wrap{width:100%}
 .h2.big{font-size:clamp(38px,6.2vw,88px);max-width:1100px}
