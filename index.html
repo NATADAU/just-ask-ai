@@ -1176,11 +1176,12 @@ html:not(.fx-spot) .card::before{display:none}
     var fd=new FormData(f);
     var url=f.getAttribute('action').replace('formsubmit.co/','formsubmit.co/ajax/');
     var done=false;
-    var timer=setTimeout(function(){if(!done){done=true;btn.disabled=false;say('Сервис не отвечает. Попробуйте ещё раз или заполните анкету с телефона по QR-коду.','err');}},15000);
+    var slow=setTimeout(function(){if(!done)say('Связь медленная, подождите, пожалуйста… Не закрывайте страницу.','wait');},10000);
+    var timer=setTimeout(function(){if(!done){done=true;btn.disabled=false;say('Сервис отзывов не ответил за минуту. Попробуйте ещё раз позже или с другого интернета (например, с телефона).','err');}},60000);
     fetch(url,{method:'POST',body:fd,headers:{'Accept':'application/json'}})
       .then(function(res){return res.json().catch(function(){return {success:res.ok}});})
       .then(function(d){
-        if(done) return; done=true; clearTimeout(timer);
+        if(done) return; done=true; clearTimeout(timer); clearTimeout(slow);
         if(d && (d.success===true||d.success==='true')){
           say('Спасибо! Отзыв отправлен. Открываю шпаргалку…','ok');
           setTimeout(function(){location.href=next;},1500);
@@ -1192,7 +1193,7 @@ html:not(.fx-spot) .card::before{display:none}
         }
       })
       .catch(function(){
-        if(done) return; done=true; clearTimeout(timer); btn.disabled=false;
+        if(done) return; done=true; clearTimeout(timer); clearTimeout(slow); btn.disabled=false;
         say('Нет связи с сервисом отзывов (возможно, его блокирует сеть). Попробуйте с телефона по QR-коду.','err');
       });
   });
